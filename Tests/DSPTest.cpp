@@ -158,7 +158,7 @@ int main()
             for (size_t start = 0; start < x.size(); start += 512)
             {
                 float* ch[2] { l.data() + start, r.data() + start };
-                e.process(ch, 2, 512);
+                e.process(ch, 2, int(std::min<size_t>(512, x.size() - start)));
                 if (start > x.size() / 2) peak = std::max(peak, e.gainReductionDb(0));
             }
             return peak;
