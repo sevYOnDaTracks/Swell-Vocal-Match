@@ -104,7 +104,7 @@ vm::Settings VocalMatchProcessor::currentSettings() const
     return s;
 }
 
-void VocalMatchProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer&) { render(buffer, false); }
+void VocalMatchProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer&) { if (! licence->isUnlocked()) { buffer.clear(); return; }  render(buffer, false); }
 void VocalMatchProcessor::processBlockBypassed(juce::AudioBuffer<float>& buffer, juce::MidiBuffer&) { render(buffer, true); }
 
 void VocalMatchProcessor::render(juce::AudioBuffer<float>& buffer, bool forceBypass)
@@ -378,7 +378,7 @@ void VocalMatchProcessor::setStateInformation(const void* data, int size)
 
 juce::AudioProcessorEditor* VocalMatchProcessor::createEditor()
 {
-    return new ResizableEditor(*this, new VocalMatchEditor(*this));
+    return swell::LicenceGuard::attach (new ResizableEditor(*this, new VocalMatchEditor(*this)));
 }
 
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter() { return new VocalMatchProcessor(); }

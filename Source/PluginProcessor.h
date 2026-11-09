@@ -1,5 +1,6 @@
 #pragma once
 #include "Analysis.h"
+#include "Licence/SwellLicence.h"
 #include "DSP.h"
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_dsp/juce_dsp.h>
@@ -14,6 +15,10 @@ inline juce::String manual(int band) { return "manual" + juce::String(band); }
 
 class VocalMatchProcessor final : public juce::AudioProcessor
 {
+public:
+    // Licence Swell : partagée par toutes les instances ; silence tant que le plugin n'est pas activé.
+    juce::SharedResourcePointer<swell::Licence> licence;
+
 public:
     VocalMatchProcessor();
     ~VocalMatchProcessor() override;
